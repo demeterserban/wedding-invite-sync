@@ -29,23 +29,22 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Wedding Invite Sync is a project starter for creating wedding invitations and syncing them with GitHub." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Wedding Invite Sync is a project starter for creating wedding invitations and syncing them with GitHub." },
+      { title: "Șerban & Dora — 23 August 2026" },
+      { name: "description", content: "Cu bucurie vă invităm la nunta noastră — 23 August 2026, Oradea." },
+      { property: "og:title", content: "Șerban & Dora — 23 August 2026" },
+      { property: "og:description", content: "Cu bucurie vă invităm la nunta noastră — 23 August 2026, Oradea." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "Wedding Invite Sync is a project starter for creating wedding invitations and syncing them with GitHub." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7c3e22c9-3c68-442e-9a6f-bff4e70c864e/id-preview-889473e0--34ffbdf2-72b4-4134-838b-53802dfd4e24.lovable.app-1776498566622.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7c3e22c9-3c68-442e-9a6f-bff4e70c864e/id-preview-889473e0--34ffbdf2-72b4-4134-838b-53802dfd4e24.lovable.app-1776498566622.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Șerban & Dora — 23 August 2026" },
+      { name: "twitter:description", content: "Cu bucurie vă invităm la nunta noastră — 23 August 2026, Oradea." },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Great+Vibes&display=swap",
       },
     ],
   }),
@@ -56,7 +55,7 @@ export const Route = createRootRoute({
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ro">
       <head>
         <HeadContent />
       </head>
