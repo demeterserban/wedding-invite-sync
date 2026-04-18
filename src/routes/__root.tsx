@@ -60,7 +60,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
         <HeadContent />
         <script
           dangerouslySetInnerHTML={{
-            __html: `if ('scrollRestoration' in history) history.scrollRestoration = 'manual';`,
+            __html: `if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; if (location.hash) history.replaceState(null, '', location.pathname + location.search);`,
           }}
         />
       </head>
