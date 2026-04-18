@@ -56,7 +56,19 @@ function Index() {
               href="#rsvp"
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById("rsvp")?.scrollIntoView({ behavior: "smooth" });
+                const el = document.getElementById("rsvp");
+                if (!el) return;
+                const startY = window.scrollY;
+                const targetY = el.getBoundingClientRect().top + startY;
+                const duration = 1600;
+                const startTime = performance.now();
+                const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+                const step = (now: number) => {
+                  const t = Math.min(1, (now - startTime) / duration);
+                  window.scrollTo(0, startY + (targetY - startY) * ease(t));
+                  if (t < 1) requestAnimationFrame(step);
+                };
+                requestAnimationFrame(step);
               }}
               className="inline-flex items-center justify-center rounded-md border border-gold bg-gold px-8 py-3 text-sm uppercase tracking-[0.2em] text-gold-foreground transition-all hover:bg-transparent hover:text-gold"
             >
