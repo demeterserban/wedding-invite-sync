@@ -54,6 +54,10 @@ function Index() {
           <div className="mt-12">
             <a
               href="#rsvp"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("rsvp")?.scrollIntoView({ behavior: "smooth" });
+              }}
               className="inline-flex items-center justify-center rounded-md border border-gold bg-gold px-8 py-3 text-sm uppercase tracking-[0.2em] text-gold-foreground transition-all hover:bg-transparent hover:text-gold"
             >
               Confirmă prezența

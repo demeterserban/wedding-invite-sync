@@ -147,7 +147,3 @@
     background: linear-gradient(to right, transparent, var(--gold), transparent);
   }
 }
-
-html {
-  scroll-behavior: smooth;
-}
