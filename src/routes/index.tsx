@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { Heart, Phone } from "lucide-react";
 import { LocationCard } from "@/components/LocationCard";
 import { RsvpForm } from "@/components/RsvpForm";
@@ -24,6 +25,13 @@ function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
 }
 
 function Index() {
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <main className="min-h-screen bg-background text-foreground">
       {/* HERO */}
