@@ -47,7 +47,7 @@ function Index() {
           </h1>
 
           <div className="mt-10 space-y-2">
-            <p className="font-serif text-2xl text-foreground sm:text-3xl">23 August 2026</p>
+            <p className="font-serif text-2xl text-foreground sm:text-3xl">29 August 2026</p>
             <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">Oradea</p>
           </div>
 
@@ -130,18 +130,18 @@ function Index() {
       {/* MAIN PARTY */}
       <section className="px-6 py-20">
         <div className="mx-auto max-w-4xl">
-          <SectionTitle eyebrow="Petrecerea principală" title="Grand Pallazo Hall" />
+          <SectionTitle eyebrow="Petrecerea principală" title="Palazzo Grand Hall" />
           <p className="mx-auto mt-6 max-w-2xl text-center text-muted-foreground">
             Vă așteptăm cu drag să sărbătorim alături de noi într-o seară de neuitat.
           </p>
           <div className="mt-12">
             <LocationCard
               subtitle="Petrecerea de nuntă"
-              title="Grand Pallazo Hall"
+              title="Palazzo Grand Hall"
               date="Sâmbătă, 29 August 2026"
               time="19:00"
               address="Str. Ciheiului 65, Oradea"
-              mapsQuery="Grand Pallazo Hall, Strada Ciheiului 65, Oradea, Romania"
+              mapsQuery="Palazzo Grand Hall, Strada Ciheiului 65, Oradea, Romania"
             />
           </div>
         </div>
