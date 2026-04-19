@@ -7,9 +7,10 @@ interface LocationCardProps {
   time: string;
   address: string;
   mapsQuery: string;
+  image?: string;
 }
 
-export function LocationCard({ title, subtitle, date, time, address, mapsQuery }: LocationCardProps) {
+export function LocationCard({ title, subtitle, date, time, address, mapsQuery, image }: LocationCardProps) {
   const encoded = encodeURIComponent(mapsQuery);
   const embedSrc = `https://www.google.com/maps?q=${encoded}&output=embed`;
   const navigateUrl = `https://www.google.com/maps/dir/?api=1&destination=${encoded}`;
@@ -17,6 +18,18 @@ export function LocationCard({ title, subtitle, date, time, address, mapsQuery }
 
   return (
     <div className="overflow-hidden rounded-lg border border-gold/30 bg-card shadow-elegant">
+      {image && (
+        <div className="relative aspect-[3/2] w-full overflow-hidden">
+          <img
+            src={image}
+            alt={title}
+            loading="lazy"
+            className="h-full w-full object-cover"
+          />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-card" />
+        </div>
+      )}
+
       <div className="p-6 text-center sm:p-8">
         <p className="text-xs uppercase tracking-[0.3em] text-gold">{subtitle}</p>
         <h3 className="mt-3 font-serif text-2xl font-medium text-foreground sm:text-3xl">{title}</h3>

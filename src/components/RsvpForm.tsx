@@ -96,15 +96,19 @@ export function RsvpForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="num_persons">Număr persoane *</Label>
-          <Input
+          <select
             id="num_persons"
-            type="number"
-            min={1}
-            max={20}
             value={numPersons}
-            onChange={(e) => setNumPersons(Math.max(1, Number(e.target.value) || 1))}
+            onChange={(e) => setNumPersons(Number(e.target.value))}
             required
-          />
+            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm md:text-sm"
+          >
+            {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+              <option key={n} value={n}>
+                {n}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="space-y-2">
@@ -164,15 +168,18 @@ export function RsvpForm() {
         {hasChildren && (
           <div className="space-y-2 pl-7">
             <Label htmlFor="num_children">Număr copii</Label>
-            <Input
+            <select
               id="num_children"
-              type="number"
-              min={1}
-              max={20}
               value={numChildren}
-              onChange={(e) => setNumChildren(Math.max(1, Number(e.target.value) || 1))}
-              className="max-w-[140px]"
-            />
+              onChange={(e) => setNumChildren(Number(e.target.value))}
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm md:text-sm"
+            >
+              {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
           </div>
         )}
       </div>

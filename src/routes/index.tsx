@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Heart, Phone } from "lucide-react";
 import { LocationCard } from "@/components/LocationCard";
 import { RsvpForm } from "@/components/RsvpForm";
@@ -13,6 +13,46 @@ export const Route = createFileRoute("/")({
     ],
   }),
 });
+
+const WEDDING_DATE = new Date("2026-08-29T19:00:00+03:00");
+
+function Countdown() {
+  const compute = () => {
+    const diff = Math.max(0, WEDDING_DATE.getTime() - Date.now());
+    const days = Math.floor(diff / 86_400_000);
+    const hours = Math.floor((diff / 3_600_000) % 24);
+    const minutes = Math.floor((diff / 60_000) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+    return { days, hours, minutes, seconds };
+  };
+
+  const [time, setTime] = useState(compute);
+
+  useEffect(() => {
+    const id = setInterval(() => setTime(compute()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const Unit = ({ value, label }: { value: number; label: string }) => (
+    <div className="flex min-w-[64px] flex-col items-center rounded-md border border-gold/30 bg-card/60 px-3 py-2 shadow-elegant sm:min-w-[80px] sm:px-4 sm:py-3">
+      <span className="font-serif text-2xl tabular-nums text-foreground sm:text-3xl">
+        {String(value).padStart(2, "0")}
+      </span>
+      <span className="mt-1 text-[10px] uppercase tracking-[0.2em] text-gold sm:text-xs">
+        {label}
+      </span>
+    </div>
+  );
+
+  return (
+    <div className="mt-8 flex items-center justify-center gap-2 sm:gap-3">
+      <Unit value={time.days} label="Zile" />
+      <Unit value={time.hours} label="Ore" />
+      <Unit value={time.minutes} label="Min" />
+      <Unit value={time.seconds} label="Sec" />
+    </div>
+  );
+}
 
 function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
@@ -41,6 +81,14 @@ function Index() {
         </div>
 
         <div className="relative z-10 max-w-2xl text-center">
+          <div className="mx-auto mb-8 h-48 w-48 overflow-hidden rounded-full border-2 border-gold/60 shadow-[0_0_60px_-10px_rgba(201,162,81,0.55)] ring-4 ring-gold/10 sm:h-60 sm:w-60 md:h-72 md:w-72">
+            <img
+              src="/hero.jpg"
+              alt="Șerban și Dora"
+              className="h-full w-full object-cover"
+              loading="eager"
+            />
+          </div>
           <p className="text-xs uppercase tracking-[0.5em] text-gold">Save the Date</p>
           <p className="mt-8 font-serif text-xl text-muted-foreground">Cu bucurie vă invităm la nunta noastră</p>
 
@@ -58,6 +106,8 @@ function Index() {
             <p className="font-serif text-2xl text-foreground sm:text-3xl">29 August 2026</p>
             <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">Oradea</p>
           </div>
+
+          <Countdown />
 
           <div className="mt-12">
             <a
@@ -94,21 +144,27 @@ function Index() {
           <div className="mt-12 grid gap-10 md:grid-cols-2">
             <div className="rounded-lg border border-gold/30 bg-card p-8 text-center shadow-elegant">
               <p className="text-xs uppercase tracking-[0.3em] text-gold">Părinții mirelui</p>
-              <p className="mt-4 font-serif text-xl text-foreground">Demeter Gheorghe</p>
-              <p className="font-serif text-xl text-foreground">Demeter Mariana</p>
+              <p className="mt-4 font-serif text-xl text-foreground">Gheorghe · Mariana</p>
+              <p className="mt-2 text-sm uppercase tracking-[0.35em] text-gold">Demeter</p>
             </div>
             <div className="rounded-lg border border-gold/30 bg-card p-8 text-center shadow-elegant">
               <p className="text-xs uppercase tracking-[0.3em] text-gold">Părinții miresei</p>
-              <p className="mt-4 font-serif text-xl text-foreground">Temian Dorel</p>
-              <p className="font-serif text-xl text-foreground">Temian Rodica</p>
+              <p className="mt-4 font-serif text-xl text-foreground">Dorel · Rodica</p>
+              <p className="mt-2 text-sm uppercase tracking-[0.35em] text-gold">Temian</p>
             </div>
           </div>
 
           <div className="mt-10 rounded-lg border border-gold/30 bg-card p-8 text-center shadow-elegant">
             <p className="text-xs uppercase tracking-[0.3em] text-gold">Nașii noștri</p>
-            <div className="mt-5 grid gap-3 font-serif text-lg text-foreground sm:grid-cols-2">
-              <p>Bancu Alex &amp; Bancu Alexandra</p>
-              <p>Marți Ionuț &amp; Marți Mariana</p>
+            <div className="mt-5 grid gap-6 sm:grid-cols-2">
+              <div>
+                <p className="font-serif text-lg text-foreground">Alex · Alexandra</p>
+                <p className="mt-1 text-xs uppercase tracking-[0.35em] text-gold">Bancu</p>
+              </div>
+              <div>
+                <p className="font-serif text-lg text-foreground">Ionuț · Mariana</p>
+                <p className="mt-1 text-xs uppercase tracking-[0.35em] text-gold">Marți</p>
+              </div>
             </div>
           </div>
         </div>
@@ -130,6 +186,7 @@ function Index() {
               time="13:20"
               address="Primăria Municipiului Oradea"
               mapsQuery="Primăria Municipiului Oradea, Oradea, Romania"
+              image="/primaria.jpg"
             />
             <LocationCard
               subtitle="Cununia religioasă"
@@ -138,6 +195,7 @@ function Index() {
               time="14:00"
               address="Biserica cu Lună, Oradea"
               mapsQuery="Biserica cu Lună, Oradea, Romania"
+              image="/biserica.jpg"
             />
             <LocationCard
               subtitle="Petrecere după cununie"
@@ -146,6 +204,7 @@ function Index() {
               time="15:30"
               address="Cheriu, Bihor"
               mapsQuery="Splash Party Cheriu, Bihor, Romania"
+              image="/splash.jpg"
             />
           </div>
         </div>
@@ -166,6 +225,7 @@ function Index() {
               time="19:00"
               address="Str. Ciheiului 65, Oradea"
               mapsQuery="Palazzo Grand Hall, Strada Ciheiului 65, Oradea, Romania"
+              image="/palazzo.jpg"
             />
           </div>
         </div>
