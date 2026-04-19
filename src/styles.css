@@ -147,3 +147,9 @@
     background: linear-gradient(to right, transparent, var(--gold), transparent);
   }
 }
+
+@layer base {
+  #lovable-badge {
+    display: none !important;
+  }
+}
