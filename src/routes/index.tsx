@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Heart, Phone } from "lucide-react";
 import { LocationCard } from "@/components/LocationCard";
+import { Reveal } from "@/components/Reveal";
 import { RsvpForm } from "@/components/RsvpForm";
 
 export const Route = createFileRoute("/")({
@@ -82,12 +83,16 @@ function Index() {
 
         <div className="relative z-10 max-w-2xl text-center">
           {/* Hidden for now
-          <div className="mx-auto mb-8 h-48 w-48 overflow-hidden rounded-full border-2 border-gold/60 shadow-[0_0_60px_-10px_rgba(201,162,81,0.55)] ring-4 ring-gold/10 sm:h-60 sm:w-60 md:h-72 md:w-72">
+          <div className="relative mx-auto mb-8 h-48 w-48 overflow-hidden rounded-full border-2 border-gold/60 shadow-[0_0_60px_-10px_rgba(201,162,81,0.55)] ring-4 ring-gold/10 sm:h-60 sm:w-60 md:h-72 md:w-72">
             <img
-              src="/hero.jpg"
+              src="/proposal.jpg"
               alt="Șerban și Dora"
-              className="h-full w-full object-cover"
+              className="h-full w-full scale-[1.8] object-cover object-[center_62%]"
               loading="eager"
+            />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute left-[46%] top-[60%] -translate-x-1/2 -translate-y-1/2 h-16 w-16 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.9)_0%,rgba(255,220,140,0.5)_35%,transparent_70%)] mix-blend-screen blur-sm animate-pulse"
             />
           </div>
           */}
@@ -141,22 +146,24 @@ function Index() {
       {/* FAMILIA */}
       <section className="px-6 py-20">
         <div className="mx-auto max-w-4xl">
-          <SectionTitle eyebrow="Alături de noi" title="Familia noastră" />
+          <Reveal>
+            <SectionTitle eyebrow="Alături de noi" title="Familia noastră" />
+          </Reveal>
 
           <div className="mt-12 grid gap-10 md:grid-cols-2">
-            <div className="rounded-lg border border-gold/30 bg-card p-8 text-center shadow-elegant">
+            <Reveal delay={150} className="rounded-lg border border-gold/30 bg-card p-8 text-center shadow-elegant">
               <p className="text-xs uppercase tracking-[0.3em] text-gold">Părinții mirelui</p>
               <p className="mt-4 font-serif text-xl text-foreground">Gheorghe · Mariana</p>
               <p className="mt-2 text-sm uppercase tracking-[0.35em] text-gold">Demeter</p>
-            </div>
-            <div className="rounded-lg border border-gold/30 bg-card p-8 text-center shadow-elegant">
+            </Reveal>
+            <Reveal delay={250} className="rounded-lg border border-gold/30 bg-card p-8 text-center shadow-elegant">
               <p className="text-xs uppercase tracking-[0.3em] text-gold">Părinții miresei</p>
               <p className="mt-4 font-serif text-xl text-foreground">Dorel · Rodica</p>
               <p className="mt-2 text-sm uppercase tracking-[0.35em] text-gold">Temian</p>
-            </div>
+            </Reveal>
           </div>
 
-          <div className="mt-10 rounded-lg border border-gold/30 bg-card p-8 text-center shadow-elegant">
+          <Reveal delay={400} className="mt-10 rounded-lg border border-gold/30 bg-card p-8 text-center shadow-elegant">
             <p className="text-xs uppercase tracking-[0.3em] text-gold">Nașii noștri</p>
             <div className="mt-5 grid gap-6 sm:grid-cols-2">
               <div>
@@ -168,46 +175,56 @@ function Index() {
                 <p className="mt-1 text-xs uppercase tracking-[0.35em] text-gold">Marți</p>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* PROGRAM ZIUA NUNTII */}
       <section className="bg-secondary/30 px-6 py-20">
         <div className="mx-auto max-w-6xl">
-          <SectionTitle eyebrow="23 August 2026" title="Ziua cununiei" />
-          <p className="mx-auto mt-6 max-w-2xl text-center text-muted-foreground">
-            Trei momente speciale în ziua în care ne unim destinele.
-          </p>
+          <Reveal>
+            <SectionTitle eyebrow="23 August 2026" title="Ziua cununiei" />
+          </Reveal>
+          <Reveal delay={150}>
+            <p className="mx-auto mt-6 max-w-2xl text-center text-muted-foreground">
+              Trei momente speciale în ziua în care ne unim destinele.
+            </p>
+          </Reveal>
 
           <div className="mt-12 grid gap-8 lg:grid-cols-3">
-            <LocationCard
-              subtitle="Cununia civilă"
-              title="Primăria Oradea"
-              date="Duminică, 23 August 2026"
-              time="13:20"
-              address="Primăria Municipiului Oradea"
-              mapsQuery="Primăria Municipiului Oradea, Oradea, Romania"
-              image="/primaria.jpg"
-            />
-            <LocationCard
-              subtitle="Cununia religioasă"
-              title="Biserica cu Lună"
-              date="Duminică, 23 August 2026"
-              time="14:00"
-              address="Biserica cu Lună, Oradea"
-              mapsQuery="Biserica cu Lună, Oradea, Romania"
-              image="/biserica.jpg"
-            />
-            <LocationCard
-              subtitle="Petrecere după cununie"
-              title="Splash Party"
-              date="Duminică, 23 August 2026"
-              time="15:30"
-              address="Cheriu, Bihor"
-              mapsQuery="Splash Party Cheriu, Bihor, Romania"
-              image="/splash.jpg"
-            />
+            <Reveal delay={250}>
+              <LocationCard
+                subtitle="Cununia civilă"
+                title="Primăria Oradea"
+                date="Duminică, 23 August 2026"
+                time="13:20"
+                address="Primăria Municipiului Oradea"
+                mapsQuery="Primăria Municipiului Oradea, Oradea, Romania"
+                image="/primaria.jpg"
+              />
+            </Reveal>
+            <Reveal delay={350}>
+              <LocationCard
+                subtitle="Cununia religioasă"
+                title="Biserica cu Lună"
+                date="Duminică, 23 August 2026"
+                time="14:00"
+                address="Biserica cu Lună, Oradea"
+                mapsQuery="Biserica cu Lună, Oradea, Romania"
+                image="/biserica.jpg"
+              />
+            </Reveal>
+            <Reveal delay={450}>
+              <LocationCard
+                subtitle="Petrecere după cununie"
+                title="Splash Party"
+                date="Duminică, 23 August 2026"
+                time="15:30"
+                address="Cheriu, Bihor"
+                mapsQuery="Splash Party Cheriu, Bihor, Romania"
+                image="/splash.jpg"
+              />
+            </Reveal>
           </div>
         </div>
       </section>
@@ -215,11 +232,15 @@ function Index() {
       {/* MAIN PARTY */}
       <section className="px-6 py-20">
         <div className="mx-auto max-w-4xl">
-          <SectionTitle eyebrow="29 August 2026" title="Palazzo Grand Hall" />
-          <p className="mx-auto mt-6 max-w-2xl text-center text-muted-foreground">
-            Vă așteptăm cu drag să sărbătorim împreună o seară de neuitat.
-          </p>
-          <div className="mt-12">
+          <Reveal>
+            <SectionTitle eyebrow="29 August 2026" title="Palazzo Grand Hall" />
+          </Reveal>
+          <Reveal delay={150}>
+            <p className="mx-auto mt-6 max-w-2xl text-center text-muted-foreground">
+              Vă așteptăm cu drag să sărbătorim împreună o seară de neuitat.
+            </p>
+          </Reveal>
+          <Reveal delay={300} className="mt-12">
             <LocationCard
               subtitle="Petrecerea de nuntă"
               title="Palazzo Grand Hall"
@@ -229,22 +250,26 @@ function Index() {
               mapsQuery="Palazzo Grand Hall, Strada Ciheiului 65, Oradea, Romania"
               image="/palazzo.jpg"
             />
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* RSVP */}
       <section id="rsvp" className="bg-secondary/30 px-6 py-20 scroll-mt-10">
         <div className="mx-auto max-w-2xl">
-          <SectionTitle eyebrow="RSVP" title="Confirmă prezența" />
-          <p className="mx-auto mt-6 max-w-xl text-center text-muted-foreground">
-            Te rugăm să ne confirmi prezența până la <strong className="text-foreground">20 iunie 2026</strong>,
-            completând formularul de mai jos.
-          </p>
+          <Reveal>
+            <SectionTitle eyebrow="RSVP" title="Confirmă prezența" />
+          </Reveal>
+          <Reveal delay={150}>
+            <p className="mx-auto mt-6 max-w-xl text-center text-muted-foreground">
+              Te rugăm să ne confirmi prezența până la <strong className="text-foreground">20 iunie 2026</strong>,
+              completând formularul de mai jos.
+            </p>
+          </Reveal>
 
-          <div className="mt-10">
+          <Reveal delay={300} className="mt-10">
             <RsvpForm />
-          </div>
+          </Reveal>
 
           <div className="mt-10 rounded-lg border border-gold/30 bg-card p-6 text-center shadow-elegant">
             <p className="text-xs uppercase tracking-[0.3em] text-gold">Sau telefonic</p>

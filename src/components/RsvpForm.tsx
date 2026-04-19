@@ -42,27 +42,44 @@ export function RsvpForm() {
   const [hasChildren, setHasChildren] = useState(false);
   const [numChildren, setNumChildren] = useState(0);
   const [attending, setAttending] = useState(true);
-  const [attendingAug23, setAttendingAug23] = useState(false);
-  const [attendingAug29, setAttendingAug29] = useState(false);
+  const [attendingAug23, setAttendingAug23] = useState(true);
+  const [attendingAug29, setAttendingAug29] = useState(true);
+  const [showEventError, setShowEventError] = useState(false);
+  const [showNameError, setShowNameError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const joinedName = names
-      .map((n) => n.trim())
-      .filter((n) => n.length > 0)
-      .join(", ");
+    const trimmedNames = names.map((n) => n.trim());
+    const anyNameMissing = trimmedNames.some((n) => n.length < 2);
+    const eventsMissing = attending && !attendingAug23 && !attendingAug29;
 
-    if (attending && !attendingAug23 && !attendingAug29) {
-      toast.error(
-        numPersons > 1
-          ? "Vă rugăm să selectați cel puțin un eveniment"
-          : "Te rugăm să selectezi cel puțin un eveniment",
-      );
+    if (anyNameMissing) setShowNameError(true);
+    if (eventsMissing) setShowEventError(true);
+
+    if (anyNameMissing || eventsMissing) {
+      const parts: string[] = [];
+      if (anyNameMissing) {
+        parts.push(
+          numPersons > 1
+            ? "Completează numele tuturor invitaților"
+            : "Completează numele",
+        );
+      }
+      if (eventsMissing) {
+        parts.push(
+          numPersons > 1
+            ? "Selectați cel puțin un eveniment"
+            : "Selectează cel puțin un eveniment",
+        );
+      }
+      toast.error(parts.join(" · "));
       return;
     }
+
+    const joinedName = trimmedNames.filter((n) => n.length > 0).join(", ");
 
     const parsed = rsvpSchema.safeParse({
       full_name: joinedName,
@@ -110,6 +127,7 @@ export function RsvpForm() {
   return (
     <form
       onSubmit={handleSubmit}
+      noValidate
       className="space-y-5 rounded-lg border border-gold/30 bg-card p-6 shadow-elegant sm:p-10"
     >
       <div className="grid gap-5 sm:grid-cols-2">
@@ -153,7 +171,10 @@ export function RsvpForm() {
             <Checkbox
               id="attending_aug_23"
               checked={attendingAug23}
-              onCheckedChange={(v) => setAttendingAug23(v === true)}
+              onCheckedChange={(v) => {
+                setAttendingAug23(v === true);
+                if (v === true) setShowEventError(false);
+              }}
               className="mt-1"
             />
             <Label htmlFor="attending_aug_23" className="cursor-pointer leading-snug">
@@ -167,7 +188,10 @@ export function RsvpForm() {
             <Checkbox
               id="attending_aug_29"
               checked={attendingAug29}
-              onCheckedChange={(v) => setAttendingAug29(v === true)}
+              onCheckedChange={(v) => {
+                setAttendingAug29(v === true);
+                if (v === true) setShowEventError(false);
+              }}
               className="mt-1"
             />
             <Label htmlFor="attending_aug_29" className="cursor-pointer leading-snug">
@@ -177,7 +201,7 @@ export function RsvpForm() {
               </span>
             </Label>
           </div>
-          {!attendingAug23 && !attendingAug29 && (
+          {showEventError && !attendingAug23 && !attendingAug29 && (
             <p className="text-xs text-destructive">
               {numPersons > 1
                 ? "Vă rugăm să selectați cel puțin un eveniment."
@@ -193,11 +217,17 @@ export function RsvpForm() {
           <Input
             id="full_name_0"
             value={names[0] ?? ""}
-            onChange={(e) => setNames([e.target.value])}
+            onChange={(e) => {
+              setNames([e.target.value]);
+              if (e.target.value.trim().length >= 2) setShowNameError(false);
+            }}
             maxLength={120}
             required
             placeholder="Numele și prenumele tău"
           />
+          {showNameError && (
+            <p className="text-xs text-destructive">Te rugăm să completezi numele.</p>
+          )}
         </div>
       ) : (
         <div className="space-y-3">
@@ -208,7 +238,11 @@ export function RsvpForm() {
                 id={`full_name_${i}`}
                 value={name}
                 onChange={(e) =>
-                  setNames((prev) => prev.map((v, j) => (j === i ? e.target.value : v)))
+                  setNames((prev) => {
+                    const next = prev.map((v, j) => (j === i ? e.target.value : v));
+                    if (next.every((n) => n.trim().length >= 2)) setShowNameError(false);
+                    return next;
+                  })
                 }
                 maxLength={120}
                 required
@@ -216,6 +250,11 @@ export function RsvpForm() {
               />
             </div>
           ))}
+          {showNameError && (
+            <p className="text-xs text-destructive">
+              Vă rugăm să completați numele tuturor invitaților.
+            </p>
+          )}
         </div>
       )}
 
