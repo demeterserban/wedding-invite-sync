@@ -8,8 +8,8 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Șerban & Dora — 23 August 2026" },
-      { name: "description", content: "Cu bucurie vă invităm la nunta noastră — 23 August 2026, Oradea." },
+      { title: "Șerban & Dora · Nunta noastră" },
+      { name: "description", content: "Cu bucurie vă invităm la nunta noastră" },
     ],
   }),
 });
