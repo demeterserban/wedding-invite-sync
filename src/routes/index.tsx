@@ -81,6 +81,7 @@ function Index() {
         </div>
 
         <div className="relative z-10 max-w-2xl text-center">
+          {/* Hidden for now
           <div className="mx-auto mb-8 h-48 w-48 overflow-hidden rounded-full border-2 border-gold/60 shadow-[0_0_60px_-10px_rgba(201,162,81,0.55)] ring-4 ring-gold/10 sm:h-60 sm:w-60 md:h-72 md:w-72">
             <img
               src="/hero.jpg"
@@ -89,6 +90,7 @@ function Index() {
               loading="eager"
             />
           </div>
+          */}
           <p className="text-xs uppercase tracking-[0.5em] text-gold">Save the Date</p>
           <p className="mt-8 font-serif text-xl text-muted-foreground">Cu bucurie vă invităm la nunta noastră</p>
 
@@ -158,7 +160,7 @@ function Index() {
             <p className="text-xs uppercase tracking-[0.3em] text-gold">Nașii noștri</p>
             <div className="mt-5 grid gap-6 sm:grid-cols-2">
               <div>
-                <p className="font-serif text-lg text-foreground">Alex · Alexandra</p>
+                <p className="font-serif text-lg text-foreground">Alexandru · Alexandra</p>
                 <p className="mt-1 text-xs uppercase tracking-[0.35em] text-gold">Bancu</p>
               </div>
               <div>
@@ -213,7 +215,7 @@ function Index() {
       {/* MAIN PARTY */}
       <section className="px-6 py-20">
         <div className="mx-auto max-w-4xl">
-          <SectionTitle eyebrow="Petrecerea principală" title="Palazzo Grand Hall" />
+          <SectionTitle eyebrow="29 August 2026" title="Palazzo Grand Hall" />
           <p className="mx-auto mt-6 max-w-2xl text-center text-muted-foreground">
             Vă așteptăm cu drag să sărbătorim alături de noi într-o seară de neuitat.
           </p>
