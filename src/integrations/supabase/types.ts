@@ -17,6 +17,8 @@ export type Database = {
       rsvps: {
         Row: {
           attending: boolean
+          attending_aug_23: boolean
+          attending_aug_29: boolean
           created_at: string
           full_name: string
           has_children: boolean
@@ -28,6 +30,8 @@ export type Database = {
         }
         Insert: {
           attending?: boolean
+          attending_aug_23?: boolean
+          attending_aug_29?: boolean
           created_at?: string
           full_name: string
           has_children?: boolean
@@ -39,6 +43,8 @@ export type Database = {
         }
         Update: {
           attending?: boolean
+          attending_aug_23?: boolean
+          attending_aug_29?: boolean
           created_at?: string
           full_name?: string
           has_children?: boolean

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { LogOut, Users, Baby, Utensils, MessageSquare, Trash2 } from "lucide-react";
+import { LogOut, Users, Baby, Utensils, MessageSquare, Trash2, Calendar } from "lucide-react";
 
 type Rsvp = {
   id: string;
@@ -14,6 +14,8 @@ type Rsvp = {
   has_children: boolean;
   num_children: number;
   attending: boolean;
+  attending_aug_23: boolean;
+  attending_aug_29: boolean;
   created_at: string;
 };
 
@@ -100,10 +102,12 @@ function AdminPage() {
   };
 
   const exportCsv = () => {
-    const header = ["Nume", "Participă", "Persoane", "Copii", "Nr copii", "Restricții meniu", "Mesaj", "Trimis la"];
+    const header = ["Nume", "Participă", "23 August", "29 August", "Persoane", "Copii", "Nr copii", "Restricții meniu", "Mesaj", "Trimis la"];
     const rows = rsvps.map((r) => [
       r.full_name,
       r.attending ? "Da" : "Nu",
+      r.attending && r.attending_aug_23 ? "Da" : "Nu",
+      r.attending && r.attending_aug_29 ? "Da" : "Nu",
       String(r.num_persons),
       r.has_children ? "Da" : "Nu",
       String(r.num_children),
@@ -136,6 +140,12 @@ function AdminPage() {
   const totalAttending = rsvps.filter((r) => r.attending);
   const totalPersons = totalAttending.reduce((s, r) => s + r.num_persons, 0);
   const totalChildren = totalAttending.reduce((s, r) => s + r.num_children, 0);
+  const totalAug23 = totalAttending
+    .filter((r) => r.attending_aug_23)
+    .reduce((s, r) => s + r.num_persons + r.num_children, 0);
+  const totalAug29 = totalAttending
+    .filter((r) => r.attending_aug_29)
+    .reduce((s, r) => s + r.num_persons + r.num_children, 0);
 
   return (
     <main className="min-h-screen bg-background px-6 py-10">
@@ -165,6 +175,11 @@ function AdminPage() {
           <StatCard label="Copii" value={totalChildren} icon={<Baby className="h-5 w-5" />} />
         </div>
 
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <StatCard label="Persoane 23 August" value={totalAug23} icon={<Calendar className="h-5 w-5" />} />
+          <StatCard label="Persoane 29 August" value={totalAug29} icon={<Calendar className="h-5 w-5" />} />
+        </div>
+
         <div className="mt-8 space-y-4">
           {rsvps.length === 0 && (
             <div className="rounded-lg border border-dashed border-border p-12 text-center text-muted-foreground">
@@ -185,15 +200,27 @@ function AdminPage() {
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-medium ${
-                      r.attending
-                        ? "bg-gold/20 text-gold"
-                        : "bg-destructive/15 text-destructive"
-                    }`}
-                  >
-                    {r.attending ? "Participă" : "Nu participă"}
-                  </span>
+                  <div className="flex flex-wrap items-center gap-1">
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-medium ${
+                        r.attending
+                          ? "bg-gold/20 text-gold"
+                          : "bg-destructive/15 text-destructive"
+                      }`}
+                    >
+                      {r.attending ? "Participă" : "Nu participă"}
+                    </span>
+                    {r.attending && r.attending_aug_23 && (
+                      <span className="rounded-full bg-secondary px-2 py-1 text-xs text-foreground">
+                        23 Aug
+                      </span>
+                    )}
+                    {r.attending && r.attending_aug_29 && (
+                      <span className="rounded-full bg-secondary px-2 py-1 text-xs text-foreground">
+                        29 Aug
+                      </span>
+                    )}
+                  </div>
                   <button
                     onClick={() => handleDelete(r.id)}
                     className="rounded-md p-2 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"

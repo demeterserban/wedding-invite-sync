@@ -17,10 +17,16 @@ const rsvpSchema = z
     has_children: z.boolean(),
     num_children: z.number().int().min(0).max(20),
     attending: z.boolean(),
+    attending_aug_23: z.boolean(),
+    attending_aug_29: z.boolean(),
   })
   .refine((d) => !d.has_children || d.num_children >= 1, {
     message: "Te rugăm să specifici numărul de copii",
     path: ["num_children"],
+  })
+  .refine((d) => !d.attending || d.attending_aug_23 || d.attending_aug_29, {
+    message: "Te rugăm să selectezi cel puțin un eveniment la care vei participa",
+    path: ["attending_aug_23"],
   });
 
 export function RsvpForm() {
@@ -40,6 +46,8 @@ export function RsvpForm() {
   const [hasChildren, setHasChildren] = useState(false);
   const [numChildren, setNumChildren] = useState(0);
   const [attending, setAttending] = useState(true);
+  const [attendingAug23, setAttendingAug23] = useState(true);
+  const [attendingAug29, setAttendingAug29] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -59,6 +67,8 @@ export function RsvpForm() {
       has_children: hasChildren,
       num_children: hasChildren ? numChildren : 0,
       attending,
+      attending_aug_23: attending ? attendingAug23 : false,
+      attending_aug_29: attending ? attendingAug29 : false,
     });
 
     if (!parsed.success) {
@@ -183,6 +193,47 @@ export function RsvpForm() {
           placeholder="Un gând frumos sau orice alte mențiuni..."
         />
       </div>
+
+      {attending && (
+        <div className="space-y-3 rounded-md border border-gold/20 bg-secondary/40 p-4">
+          <p className="text-sm font-medium text-foreground">
+            La ce evenimente vei participa? <span className="text-gold">✦</span>
+          </p>
+          <div className="flex items-start gap-3">
+            <Checkbox
+              id="attending_aug_23"
+              checked={attendingAug23}
+              onCheckedChange={(v) => setAttendingAug23(v === true)}
+              className="mt-1"
+            />
+            <Label htmlFor="attending_aug_23" className="cursor-pointer leading-snug">
+              <span className="font-medium">23 August</span>
+              <span className="block text-xs text-muted-foreground">
+                Cununia civilă, religioasă & Splash Party (Cheriu)
+              </span>
+            </Label>
+          </div>
+          <div className="flex items-start gap-3">
+            <Checkbox
+              id="attending_aug_29"
+              checked={attendingAug29}
+              onCheckedChange={(v) => setAttendingAug29(v === true)}
+              className="mt-1"
+            />
+            <Label htmlFor="attending_aug_29" className="cursor-pointer leading-snug">
+              <span className="font-medium">29 August</span>
+              <span className="block text-xs text-muted-foreground">
+                Seara de nuntă la Palazzo
+              </span>
+            </Label>
+          </div>
+          {!attendingAug23 && !attendingAug29 && (
+            <p className="text-xs text-destructive">
+              Te rugăm să selectezi cel puțin un eveniment.
+            </p>
+          )}
+        </div>
+      )}
 
       <div className="space-y-3 rounded-md border border-gold/20 bg-secondary/40 p-4">
         <div className="flex items-center gap-3">
