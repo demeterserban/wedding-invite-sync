@@ -24,9 +24,18 @@ const rsvpSchema = z
   });
 
 export function RsvpForm() {
-  const [fullName, setFullName] = useState("");
+  const [names, setNames] = useState<string[]>([""]);
   const [numPersons, setNumPersons] = useState(1);
   const [menuRestrictions, setMenuRestrictions] = useState("");
+
+  const updateNumPersons = (n: number) => {
+    setNumPersons(n);
+    setNames((prev) => {
+      if (prev.length === n) return prev;
+      if (prev.length < n) return [...prev, ...Array(n - prev.length).fill("")];
+      return prev.slice(0, n);
+    });
+  };
   const [message, setMessage] = useState("");
   const [hasChildren, setHasChildren] = useState(false);
   const [numChildren, setNumChildren] = useState(0);
@@ -37,8 +46,13 @@ export function RsvpForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const joinedName = names
+      .map((n) => n.trim())
+      .filter((n) => n.length > 0)
+      .join(", ");
+
     const parsed = rsvpSchema.safeParse({
-      full_name: fullName,
+      full_name: joinedName,
       num_persons: numPersons,
       menu_restrictions: menuRestrictions || undefined,
       message: message || undefined,
@@ -70,7 +84,9 @@ export function RsvpForm() {
       <div className="rounded-lg border border-gold/40 bg-card p-10 text-center shadow-elegant">
         <p className="font-script text-5xl text-gold">Mulțumim!</p>
         <p className="mt-4 text-lg text-muted-foreground">
-          Confirmarea ta a fost înregistrată. Abia așteptăm să te avem alături de noi.
+          {numPersons > 1
+            ? "Confirmarea voastră a fost înregistrată. Abia așteptăm să vă avem alături de noi."
+            : "Confirmarea ta a fost înregistrată. Abia așteptăm să te avem alături de noi."}
         </p>
       </div>
     );
@@ -81,25 +97,13 @@ export function RsvpForm() {
       onSubmit={handleSubmit}
       className="space-y-5 rounded-lg border border-gold/30 bg-card p-6 shadow-elegant sm:p-10"
     >
-      <div className="space-y-2">
-        <Label htmlFor="full_name">Nume complet *</Label>
-        <Input
-          id="full_name"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          maxLength={120}
-          required
-          placeholder="Numele și prenumele tău"
-        />
-      </div>
-
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="num_persons">Număr persoane *</Label>
+          <Label htmlFor="num_persons">Număr persoane <span className="text-gold">✦</span></Label>
           <select
             id="num_persons"
             value={numPersons}
-            onChange={(e) => setNumPersons(Number(e.target.value))}
+            onChange={(e) => updateNumPersons(Number(e.target.value))}
             required
             className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm md:text-sm"
           >
@@ -124,6 +128,38 @@ export function RsvpForm() {
           </select>
         </div>
       </div>
+
+      {numPersons === 1 ? (
+        <div className="space-y-2">
+          <Label htmlFor="full_name_0">Invitat <span className="text-gold">✦</span></Label>
+          <Input
+            id="full_name_0"
+            value={names[0] ?? ""}
+            onChange={(e) => setNames([e.target.value])}
+            maxLength={120}
+            required
+            placeholder="Numele și prenumele tău"
+          />
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {names.map((name, i) => (
+            <div key={i} className="space-y-2">
+              <Label htmlFor={`full_name_${i}`}>Invitat {i + 1} <span className="text-gold">✦</span></Label>
+              <Input
+                id={`full_name_${i}`}
+                value={name}
+                onChange={(e) =>
+                  setNames((prev) => prev.map((v, j) => (j === i ? e.target.value : v)))
+                }
+                maxLength={120}
+                required
+                placeholder="Numele și prenumele tău"
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="space-y-2">
         <Label htmlFor="menu_restrictions">Restricții meniu</Label>
@@ -194,7 +230,7 @@ export function RsvpForm() {
       </Button>
 
       <p className="text-center text-xs text-muted-foreground">
-        Confirmările se primesc până la 20 iunie 2026
+        <span className="text-gold">✦</span> Câmpurile marcate sunt necesare
       </p>
     </form>
   );
