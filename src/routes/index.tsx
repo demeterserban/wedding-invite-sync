@@ -277,7 +277,6 @@ function Index() {
       {/* FOOTER */}
       <footer className="border-t border-gold/20 px-6 py-10 text-center">
         <p className="font-script text-3xl text-gold">Șerban &amp; Dora</p>
-        <p className="mt-2 text-sm text-muted-foreground">23 August 2026 · Oradea</p>
         <Link
           to="/admin"
           className="mt-4 inline-block text-xs text-muted-foreground/60 hover:text-gold"
