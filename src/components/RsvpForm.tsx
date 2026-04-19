@@ -23,10 +23,6 @@ const rsvpSchema = z
   .refine((d) => !d.has_children || d.num_children >= 1, {
     message: "Te rugăm să specifici numărul de copii",
     path: ["num_children"],
-  })
-  .refine((d) => !d.attending || d.attending_aug_23 || d.attending_aug_29, {
-    message: "Te rugăm să selectezi cel puțin un eveniment la care vei participa",
-    path: ["attending_aug_23"],
   });
 
 export function RsvpForm() {
@@ -46,8 +42,8 @@ export function RsvpForm() {
   const [hasChildren, setHasChildren] = useState(false);
   const [numChildren, setNumChildren] = useState(0);
   const [attending, setAttending] = useState(true);
-  const [attendingAug23, setAttendingAug23] = useState(true);
-  const [attendingAug29, setAttendingAug29] = useState(true);
+  const [attendingAug23, setAttendingAug23] = useState(false);
+  const [attendingAug29, setAttendingAug29] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -58,6 +54,15 @@ export function RsvpForm() {
       .map((n) => n.trim())
       .filter((n) => n.length > 0)
       .join(", ");
+
+    if (attending && !attendingAug23 && !attendingAug29) {
+      toast.error(
+        numPersons > 1
+          ? "Vă rugăm să selectați cel puțin un eveniment"
+          : "Te rugăm să selectezi cel puțin un eveniment",
+      );
+      return;
+    }
 
     const parsed = rsvpSchema.safeParse({
       full_name: joinedName,
@@ -133,11 +138,54 @@ export function RsvpForm() {
             onChange={(e) => setAttending(e.target.value === "yes")}
             className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm md:text-sm"
           >
-            <option value="yes">Da, voi participa</option>
-            <option value="no">Din păcate nu pot</option>
+            <option value="yes">{numPersons > 1 ? "Da, vom participa" : "Da, voi participa"}</option>
+            <option value="no">{numPersons > 1 ? "Din păcate nu putem" : "Din păcate nu pot"}</option>
           </select>
         </div>
       </div>
+
+      {attending && (
+        <div className="space-y-3 rounded-md border border-gold/20 bg-secondary/40 p-4">
+          <p className="text-sm font-medium text-foreground">
+            {numPersons > 1 ? "La ce evenimente veți participa?" : "La ce evenimente vei participa?"} <span className="text-gold">✦</span>
+          </p>
+          <div className="flex items-start gap-3">
+            <Checkbox
+              id="attending_aug_23"
+              checked={attendingAug23}
+              onCheckedChange={(v) => setAttendingAug23(v === true)}
+              className="mt-1"
+            />
+            <Label htmlFor="attending_aug_23" className="cursor-pointer leading-snug">
+              <span className="font-medium">23 August</span>
+              <span className="block text-xs text-muted-foreground">
+                Cununia civilă, religioasă & Splash Party (Cheriu)
+              </span>
+            </Label>
+          </div>
+          <div className="flex items-start gap-3">
+            <Checkbox
+              id="attending_aug_29"
+              checked={attendingAug29}
+              onCheckedChange={(v) => setAttendingAug29(v === true)}
+              className="mt-1"
+            />
+            <Label htmlFor="attending_aug_29" className="cursor-pointer leading-snug">
+              <span className="font-medium">29 August</span>
+              <span className="block text-xs text-muted-foreground">
+                Seara de nuntă la Palazzo
+              </span>
+            </Label>
+          </div>
+          {!attendingAug23 && !attendingAug29 && (
+            <p className="text-xs text-destructive">
+              {numPersons > 1
+                ? "Vă rugăm să selectați cel puțin un eveniment."
+                : "Te rugăm să selectezi cel puțin un eveniment."}
+            </p>
+          )}
+        </div>
+      )}
 
       {numPersons === 1 ? (
         <div className="space-y-2">
@@ -194,47 +242,6 @@ export function RsvpForm() {
         />
       </div>
 
-      {attending && (
-        <div className="space-y-3 rounded-md border border-gold/20 bg-secondary/40 p-4">
-          <p className="text-sm font-medium text-foreground">
-            La ce evenimente vei participa? <span className="text-gold">✦</span>
-          </p>
-          <div className="flex items-start gap-3">
-            <Checkbox
-              id="attending_aug_23"
-              checked={attendingAug23}
-              onCheckedChange={(v) => setAttendingAug23(v === true)}
-              className="mt-1"
-            />
-            <Label htmlFor="attending_aug_23" className="cursor-pointer leading-snug">
-              <span className="font-medium">23 August</span>
-              <span className="block text-xs text-muted-foreground">
-                Cununia civilă, religioasă & Splash Party (Cheriu)
-              </span>
-            </Label>
-          </div>
-          <div className="flex items-start gap-3">
-            <Checkbox
-              id="attending_aug_29"
-              checked={attendingAug29}
-              onCheckedChange={(v) => setAttendingAug29(v === true)}
-              className="mt-1"
-            />
-            <Label htmlFor="attending_aug_29" className="cursor-pointer leading-snug">
-              <span className="font-medium">29 August</span>
-              <span className="block text-xs text-muted-foreground">
-                Seara de nuntă la Palazzo
-              </span>
-            </Label>
-          </div>
-          {!attendingAug23 && !attendingAug29 && (
-            <p className="text-xs text-destructive">
-              Te rugăm să selectezi cel puțin un eveniment.
-            </p>
-          )}
-        </div>
-      )}
-
       <div className="space-y-3 rounded-md border border-gold/20 bg-secondary/40 p-4">
         <div className="flex items-center gap-3">
           <Checkbox
@@ -248,7 +255,7 @@ export function RsvpForm() {
             }}
           />
           <Label htmlFor="has_children" className="cursor-pointer">
-            Vin însoțit/ă de copii
+            {numPersons > 1 ? "Venim însoțiți de copii" : "Vin însoțit/ă de copii"}
           </Label>
         </div>
 
