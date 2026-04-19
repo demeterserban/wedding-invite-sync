@@ -217,7 +217,7 @@ function Index() {
         <div className="mx-auto max-w-4xl">
           <SectionTitle eyebrow="29 August 2026" title="Palazzo Grand Hall" />
           <p className="mx-auto mt-6 max-w-2xl text-center text-muted-foreground">
-            Vă așteptăm cu drag să sărbătorim alături de noi într-o seară de neuitat.
+            Vă așteptăm cu drag să sărbătorim împreună o seară de neuitat.
           </p>
           <div className="mt-12">
             <LocationCard
